@@ -13,13 +13,14 @@ const LoginScreen = () => {
 
   // Function to handle form submission
   const handleLogin = async () => {
+    console.log("pahucha")
     if (!email || !password) {
       Alert.alert('Error', 'Please fill all the fields');
       return;
     }
 
     try {
-      const response = await axios.post('http://192.168.179.61:3000/auth/login', {
+      const response = await axios.post('http://192.168.14.61:3000/auth/login', {
         email,
         password,
       });
@@ -31,7 +32,7 @@ const LoginScreen = () => {
       router.push('/')
     } catch (error) {
       console.log(error);
-      Alert.alert('Error', 'Failed to create account');
+      Alert.alert('Error', 'Failed to login');
     }
   };
 
@@ -60,7 +61,7 @@ const LoginScreen = () => {
 
         {/* Signup Button */}
         <TouchableOpacity className="bg-purple-600 py-4 rounded-lg" onPress={handleLogin}>
-          <Text className="text-center text-white text-lg font-semibold">Sign Up</Text>
+          <Text className="text-center text-white text-lg font-semibold">Login</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
