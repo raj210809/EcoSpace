@@ -1,32 +1,34 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert, ScrollView } from 'react-native';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useRouter } from 'expo-router';
 
-const SignupScreen = () => {
+const LoginScreen = () => {
   // State for form inputs
-  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [batch, setBatch] = useState('');
+
+  const router = useRouter()
 
   // Function to handle form submission
-  const handleSignup = async () => {
-    if (!name || !email || !password || !batch) {
+  const handleLogin = async () => {
+    if (!email || !password) {
       Alert.alert('Error', 'Please fill all the fields');
       return;
     }
 
     try {
-      const response = await axios.post('http://192.168.179.61:3000/auth/signup', {
-        name,
+      const response = await axios.post('http://192.168.179.61:3000/auth/login', {
         email,
         password,
-        batch,
       });
       
       // Handle the response
-      Alert.alert('Success', 'Account created successfully!');
+      Alert.alert('Success', response.data.message);
       console.log(response.data);
+      await AsyncStorage.setItem('token' , response.data.token)
+      router.push('/')
     } catch (error) {
       console.log(error);
       Alert.alert('Error', 'Failed to create account');
@@ -39,15 +41,6 @@ const SignupScreen = () => {
         {/* Title */}
         <Text className="text-4xl font-bold text-center text-purple-700 mb-8">Sign Up</Text>
 
-        {/* Name Input */}
-        <TextInput
-          className="bg-gray-100 p-4 mb-4 rounded-lg"
-          placeholder="Name"
-          value={name}
-          onChangeText={setName}
-        />
-
-        {/* Email Input */}
         <TextInput
           className="bg-gray-100 p-4 mb-4 rounded-lg"
           placeholder="Email"
@@ -65,16 +58,8 @@ const SignupScreen = () => {
           onChangeText={setPassword}
         />
 
-        {/* Batch Input */}
-        <TextInput
-          className="bg-gray-100 p-4 mb-4 rounded-lg"
-          placeholder="Batch"
-          value={batch}
-          onChangeText={setBatch}
-        />
-
         {/* Signup Button */}
-        <TouchableOpacity className="bg-purple-600 py-4 rounded-lg" onPress={handleSignup}>
+        <TouchableOpacity className="bg-purple-600 py-4 rounded-lg" onPress={handleLogin}>
           <Text className="text-center text-white text-lg font-semibold">Sign Up</Text>
         </TouchableOpacity>
       </View>
@@ -82,4 +67,4 @@ const SignupScreen = () => {
   );
 };
 
-export default SignupScreen;
+export default LoginScreen;

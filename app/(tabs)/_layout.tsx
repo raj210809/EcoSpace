@@ -6,7 +6,7 @@ import {FontAwesome} from "@expo/vector-icons"
 const tablayout = () => {
   return (
     <Tabs>
-        <Tabs.Screen name='home' options={{title : "home" , tabBarIcon: ({color})=> <FontAwesome size={28} name='home' color={color}/>,headerShown:false}}/>
+        <Tabs.Screen name='index' options={{title : "home" , tabBarIcon: ({color})=> <FontAwesome size={28} name='home' color={color}/>,headerShown:false}}/>
         <Tabs.Screen name='profile' options={{title : "profile" , tabBarIcon: ({color})=> <FontAwesome size={28} name='user' color={color}/>,headerShown:false}}/>
     </Tabs>
   )
