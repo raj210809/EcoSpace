@@ -26,6 +26,9 @@ const userModel = new mongoose.Schema({
         type : String,
         enum : ['Admin' , 'Student' , 'Alumni'],
         default:'Student'
+    },
+    profilePic : {
+        type : String,
     }
 })
 
