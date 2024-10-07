@@ -1,6 +1,8 @@
 import express from "express"
 import { mongoconnect } from "./utils/connectdb.js"
 import authrouter from "./routers/authRoute.js"
+import dotenv from 'dotenv'
+dotenv.config({path:'./.env'})
 
 const app = express()
 app.use(express.json())

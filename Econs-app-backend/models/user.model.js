@@ -19,7 +19,7 @@ const userModel = new mongoose.Schema({
         default: Date.now
     },
     batch : {
-        type : Number,
+        type : String,
         required:true
     },
     role : {
