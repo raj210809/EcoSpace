@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Image, Button , Alert } from 'react-native';
+import { ScrollView } from "react-native-gesture-handler";
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
 import {Cloudinary} from '@cloudinary/url-gen';
+import EditProfile from '../components/profileupdater';
 
 interface user {
   _id : string,
@@ -12,78 +14,20 @@ interface user {
   email : string,
   role : string,
   profilePic : string,
-  batch: string
+  batch: string,
+  currentlyIn : string
 }
 
 const AuthScreen = () => {
   const router = useRouter();
   const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<user | null>(null);
-  const [profileImage, setProfileImage] = useState<string | null>(null);
-
-  const pickImage = async () => {
-    // Ask the user for permission to access media library
-    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-    if (!permissionResult.granted) {
-      alert('Permission to access media library is required!');
-      return;
-    }
-
-    // Let the user pick an image from the media library
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [3, 3],
-      quality: 1,
-    });
-    if (!result.canceled) {
-      setProfileImage(result.assets[0].uri);
-    }
-    setTimeout(() => {
-      console.log(profileImage)
-      uploadImage();
-    }, 1000);
-  };
-
-  const uploadImage = async () => {
-    if (!profileImage) {
-      alert('Please select an image first');
-      return;
-    }
-
-    const formData = new FormData();
-
-    // Append the file to the FormData object
-    formData.append('file', {
-      name: 'profilepic.jpg', // The file name
-      type: 'image/jpeg', // The MIME type of the file
-      uri: profileImage, // The file URI from the ImagePicker
-    } as any); // Casting as 'any' to bypass TypeScript type checking
-    
-
-    formData.append('upload_preset', 'ytnw1qht'); // Your Cloudinary upload preset
-
-    try {
-      const response1 = await axios.post('https://api.cloudinary.com/v1_1/dx2l62ub6/image/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
-      // On successful upload, get the image URL
-      const imageUrl = response1.data.secure_url;
-      const response = await axios.put('http://192.168.14.61:3000/auth/updateprofilepic',{id : user?._id , profilepic : imageUrl})
-      console.log('Image URL: ', imageUrl);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const [isedit , setisedit] = useState(false)
 
   const getUserDetails = async () => {
     try {
       if (token) {
-        const response = await axios.get('http://192.168.14.61:3000/auth/getuserdetails', {
+        const response = await axios.get('http://192.168.90.61:3000/auth/getuserdetails', {
           headers: { Authorization: `Bearer ${token}` }
         });
         console.log(response.data.user.profilePic);
@@ -92,6 +36,21 @@ const AuthScreen = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+  const sendupdateddata =async (updateprofile : any) =>{
+    try {
+      const response = await axios.put('http://192.168.90.61/auth/updateprofile' , updateprofile)
+      console.log(response.data)
+      Alert.alert(response.data.message)
+    } catch (error) {
+      Alert.alert('server error , try again')
+    }
+  }
+
+  const handleSaveProfile = (updatedProfile: any) => {
+    console.log(updatedProfile)
+    sendupdateddata(updatedProfile)
+    setisedit(false);
   };
 
   useEffect(() => {
@@ -107,10 +66,11 @@ const AuthScreen = () => {
     if (token) {
       getUserDetails();
     }
-  }, [token]);
+  }, [token,isedit]);
 
   return (
-    <View className="flex-1 bg-white justify-center items-center px-6 py-8">
+    <ScrollView className='flex-1 bg-white mt-6'>
+      <View className="flex-1 bg-white justify-center items-center px-6 py-8">
       {user ? (
         // Show User Info when the user is logged in
         <>
@@ -120,7 +80,7 @@ const AuthScreen = () => {
             className="w-32 h-32 rounded-full mb-6"
           />
 
-          <Button title={user.profilePic === null ? "ADD DP" : "EDIT DP"} onPress={pickImage} />
+          <Button title={'Edit Profile'} onPress={()=>{setisedit(true)}} />
 
           {/* User Name */}
           <Text className="text-3xl font-bold text-center text-gray-800 mb-2">{user.name || 'John Doe'}</Text>
@@ -136,8 +96,9 @@ const AuthScreen = () => {
 
           {/* Other Info */}
           <View className="w-full bg-gray-100 rounded-lg p-4">
-            <Text className="text-center text-gray-700">Additional Info Section</Text>
+            <Text className="text-center text-gray-700">{user.currentlyIn}</Text>
           </View>
+          {isedit && <EditProfile currentProfile={user} onSave={handleSaveProfile} onCancel={()=>{setisedit(false)}}/>}
         </>
       ) : (
         // Show Login and Signup Buttons when user is not logged in
@@ -163,6 +124,8 @@ const AuthScreen = () => {
         </>
       )}
     </View>
+    </ScrollView>
+    
   );
 };
 

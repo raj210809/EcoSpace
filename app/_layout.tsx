@@ -6,7 +6,7 @@ import SignupScreen from '@/app/components/signup'
 
 const Layout = () => {
   return (
-    <GestureHandlerRootView>
+    <GestureHandlerRootView className='flex-1'>
         <Stack screenOptions={{
             headerShown:false
         }}>
