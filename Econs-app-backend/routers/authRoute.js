@@ -6,6 +6,6 @@ import {updateprofilepic} from "../controllers/profileupddater.js"
 router.post('/signup', signup);
 router.post('/login' , login)
 router.get('/getuserdetails' , getuserdetails)
-router.put('/updateprofilepic' , updateprofilepic)
+router.put('/updateprofile' , updateprofilepic)
 const authrouter = router
 export default authrouter

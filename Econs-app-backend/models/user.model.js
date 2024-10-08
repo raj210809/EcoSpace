@@ -29,6 +29,15 @@ const userModel = new mongoose.Schema({
     },
     profilePic : {
         type : String,
+    },
+    about : {
+        type : String
+    },
+    currentlyIn : {
+        type : String
+    },
+    position : {
+        type : String
     }
 })
 
