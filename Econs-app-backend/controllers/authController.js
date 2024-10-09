@@ -63,6 +63,7 @@ export const getuserdetails = async (req, res) => {
 
         // Use the decoded information to get the user ID (assuming the _id is in the token payload)
         const userId = decoded.id;
+        console.log(userId)
 
         // Fetch the user from the database
         const user = await User.findOne({ _id: userId });
@@ -81,3 +82,16 @@ export const getuserdetails = async (req, res) => {
         res.status(500).json({ message: 'Server error', error });
     }
 };
+export const getuserdetail = async (req,res)=>{
+    const {id} = req.query
+        try {
+            const user = await User.findById(id)
+            if(!user){
+                res.status(500).json({message : 'user not found'})
+            }
+            res.status(200).json({user : user})
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({message : 'server error'})
+        }    
+}
