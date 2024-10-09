@@ -8,7 +8,7 @@ import * as ImagePicker from 'expo-image-picker';
 import {Cloudinary} from '@cloudinary/url-gen';
 import EditProfile from '../components/profileupdater';
 
-interface user {
+export interface user {
   _id : string,
   name : string,
   email : string,

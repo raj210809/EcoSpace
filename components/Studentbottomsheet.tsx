@@ -3,11 +3,13 @@ import { View, Text, StyleSheet, Image ,TouchableOpacity} from "react-native";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
+import { useRouter } from "expo-router";
 
 export const BottomView = ({onClose , studentid}:{
     onClose :()=>void;
     studentid : string | null
 }) => {
+    const router = useRouter()
   const bottomsheetref = useRef<BottomSheet>(null);
 
   // Handle changes when the sheet position changes
@@ -15,8 +17,7 @@ export const BottomView = ({onClose , studentid}:{
     console.log("Sheet position changed to index:", index);
   }, []);
 
-  // Snap points defining the available heights for the bottom sheet
-  const snapPoints = ["100%"]; // Can be percentages or fixed values
+  const snapPoints = ["100%"];
 
   return (
     <View style={styles.container}>
@@ -39,7 +40,7 @@ export const BottomView = ({onClose , studentid}:{
         <Text>{studentid}</Text>
 
         {/* Go to Profile Button */}
-        <TouchableOpacity className="bg-purple-600 py-3 px-6 rounded-lg mb-8">
+        <TouchableOpacity className="bg-purple-600 py-3 px-6 rounded-lg mb-8" onPress={()=>{router.push(`/profileshow/${studentid}`)}}>
           <Text className="text-white text-lg font-semibold">Go to Profile</Text>
         </TouchableOpacity>
 

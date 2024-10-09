@@ -7,7 +7,7 @@ const Active = () => {
     const [drawer , setdrawer] = useState(false)
     const [selectedStudentId, setSelectedStudentId] = useState<string | null>(null);
     const students = [
-        { id: '1', name: 'John Doe', about: 'CS Student at IITR', imageUrl: 'https://img.freepik.com/free-photo/young-student-woman-wearing-denim-jacket-eyeglasses-holding-colorful-folders-showing-thumb-up-pink_176532-13861.jpg' },
+        { id: '6704161babc9133695d90bba', name: 'John Doe', about: 'CS Student at IITR', imageUrl: 'https://img.freepik.com/free-photo/young-student-woman-wearing-denim-jacket-eyeglasses-holding-colorful-folders-showing-thumb-up-pink_176532-13861.jpg' },
         { id: '2', name: 'Jane Smith', about: 'Mechanical Engg Student', imageUrl: 'https://img.freepik.com/free-photo/young-student-woman-wearing-denim-jacket-eyeglasses-holding-colorful-folders-showing-thumb-up-pink_176532-13861.jpg' },
         { id: '3', name: 'Alice Johnson', about: 'Electrical Engg Student', imageUrl: 'https://img.freepik.com/free-photo/young-student-woman-wearing-denim-jacket-eyeglasses-holding-colorful-folders-showing-thumb-up-pink_176532-13861.jpg' },
         { id: '4', name: 'Bob Brown', about: 'Civil Engg Student', imageUrl: 'https://img.freepik.com/free-photo/young-student-woman-wearing-denim-jacket-eyeglasses-holding-colorful-folders-showing-thumb-up-pink_176532-13861.jpg' },
