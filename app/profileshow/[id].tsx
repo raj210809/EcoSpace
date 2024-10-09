@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, View } from 'react-native'
+import { Image, StyleSheet, Text, View , TouchableOpacity ,Linking  } from 'react-native'
 import React,{useEffect, useState} from 'react'
 import { user } from '@/app/(tabs)/profile';
 import {useLocalSearchParams} from 'expo-router'
@@ -10,9 +10,21 @@ const index = () => {
     const {id} = useLocalSearchParams()
     console.log(id)
 
+    const openLink = (url: string) => {
+      Linking.canOpenURL(url)
+        .then((supported) => {
+          if (supported) {
+            Linking.openURL(url);
+          } else {
+            console.log("Can't handle URL:", url);
+          }
+        })
+        .catch((err) => console.error("An error occurred", err));
+    };
+
     const getUserDetails = async () => {
         try {
-            const response = await axios.get(`http://192.168.90.61:3000/auth/getuserdetail?id=${id}`);
+            const response = await axios.get(`http://192.168.22.61:3000/auth/getuserdetail?id=${id}`);
             setUser(response.data.user);
         } catch (error) {
           console.log(error);
@@ -44,7 +56,22 @@ const index = () => {
 
           {/* Other Info */}
           <View className="w-full bg-gray-100 rounded-lg p-4">
-            <Text className="text-center text-gray-700">{user?.currentlyIn}</Text>
+            <Text className="text-center text-gray-700">{user?.about}</Text>
+          </View>
+          <Text className="text-center text-gray-700">{user?.position}</Text>
+          <Text className="text-center text-gray-700">{user?.currentlyIn}</Text>
+          <View className="w-full bg-gray-100 rounded-lg p-4">
+          {user?.instagram && (
+                <TouchableOpacity className="bg-red-600 py-2 px-4 rounded-lg mb-4" onPress={() => openLink(`https://instagram.com/${user.instagram}`)}>
+                  <Text className="text-white text-lg font-semibold">Instagram</Text>
+                </TouchableOpacity>
+              )}
+
+              {user?.linkedin && (
+                <TouchableOpacity className="bg-blue-700 py-2 px-4 rounded-lg" onPress={() => openLink(`https://linkedin.com/in/${user.linkedin}`)}>
+                  <Text className="text-white text-lg font-semibold">LinkedIn</Text>
+                </TouchableOpacity>
+              )}
           </View>
         </View>
     </ScrollView>

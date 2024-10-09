@@ -102,6 +102,20 @@ const EditProfile = ({ currentProfile, onSave, onCancel }) => {
         className="border p-2 mt-1 rounded"
       />
 
+      <Text className="mt-4">Instagram Handdle</Text>
+            <TextInput
+              value={updatedProfile.instagram}
+              onChangeText={(text) => setUpdatedProfile({ ...updatedProfile, instagram: text })}
+              className="border p-2 mt-1 rounded"
+            />
+
+      <Text className="mt-4">Linked In Handle</Text>
+            <TextInput
+              value={updatedProfile.linkedin}
+              onChangeText={(text) => setUpdatedProfile({ ...updatedProfile, linkedin: text })}
+              className="border p-2 mt-1 rounded"
+            />
+
       {/* Save and Cancel Buttons */}
       <View className="flex-row justify-between mt-6 mb-10">
         <Button title="Cancel" onPress={onCancel} color="red" />

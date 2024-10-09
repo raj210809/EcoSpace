@@ -15,7 +15,11 @@ export interface user {
   role : string,
   profilePic : string,
   batch: string,
-  currentlyIn : string
+  currentlyIn : string,
+  about : string,
+  position : string,
+  instagram : string,
+  linkedin : string
 }
 
 const AuthScreen = () => {
@@ -27,7 +31,7 @@ const AuthScreen = () => {
   const getUserDetails = async () => {
     try {
       if (token) {
-        const response = await axios.get('http://192.168.90.61:3000/auth/getuserdetails', {
+        const response = await axios.get('http://192.168.22.61:3000/auth/getuserdetails', {
           headers: { Authorization: `Bearer ${token}` }
         });
         console.log(response.data.user.profilePic);
@@ -39,7 +43,7 @@ const AuthScreen = () => {
   };
   const sendupdateddata =async (updateprofile : any) =>{
     try {
-      const response = await axios.put('http://192.168.90.61/auth/updateprofile' , updateprofile)
+      const response = await axios.put('http://192.168.22.61/auth/updateprofile' , updateprofile)
       console.log(response.data)
       Alert.alert(response.data.message)
     } catch (error) {
@@ -96,7 +100,13 @@ const AuthScreen = () => {
 
           {/* Other Info */}
           <View className="w-full bg-gray-100 rounded-lg p-4">
-            <Text className="text-center text-gray-700">{user.currentlyIn}</Text>
+            <Text className="text-center text-gray-700">{user.about}</Text>
+          </View>
+          <Text className="text-center text-gray-700">{user.position}</Text>
+          <Text className="text-center text-gray-700">{user.currentlyIn}</Text>
+          <View className="w-full bg-gray-100 rounded-lg p-4">
+            <Text className="text-center text-gray-700">instagram : {user.instagram}</Text>
+            <Text className="text-center text-gray-700">linkedin : {user.linkedin}</Text>
           </View>
           {isedit && <EditProfile currentProfile={user} onSave={handleSaveProfile} onCancel={()=>{setisedit(false)}}/>}
         </>
