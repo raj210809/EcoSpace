@@ -2,7 +2,7 @@ import express from 'express';
 import User from '../models/user.model.js';
 import mongoose from 'mongoose';
 export const updateprofilepic = async (req,res)=>{
-    const {_id , profilePic , about , currentlyIn , position} = req.body;
+    const {_id , profilePic , about , currentlyIn , position , instagram , linkedin} = req.body;
     try {
         const user = await User.findById(_id);
     if(!user){
@@ -12,6 +12,8 @@ export const updateprofilepic = async (req,res)=>{
     user.about = about
     user.currentlyIn = currentlyIn
     user.position = position
+    user.instagram = instagram
+    user.linkedin = linkedin
     await user.save();
     res.status(200).json({ message: 'profile updated' })
     } catch (error) {

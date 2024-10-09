@@ -38,6 +38,12 @@ const userModel = new mongoose.Schema({
     },
     position : {
         type : String
+    },
+    instagram : {
+        type  :String
+    },
+    linkedin : {
+        type : String
     }
 })
 
