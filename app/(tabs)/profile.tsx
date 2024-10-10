@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Image, Button , Alert } from 'react-native';
 import { ScrollView } from "react-native-gesture-handler";
 import { useRouter } from 'expo-router';
+import {useDispatch , useSelector} from 'react-redux'
+import { RootState, AppDispatch } from '@/redux/store';
+import { setUser } from '@/redux/slice/userSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import * as ImagePicker from 'expo-image-picker';
-import {Cloudinary} from '@cloudinary/url-gen';
 import EditProfile from '../components/profileupdater';
 
 export interface user {
@@ -23,9 +24,10 @@ export interface user {
 }
 
 const AuthScreen = () => {
+  const dispatch = useDispatch<AppDispatch>()
   const router = useRouter();
   const [token, setToken] = useState<string | null>(null);
-  const [user, setUser] = useState<user | null>(null);
+  const [user, setUserp] = useState<user | null>(null);
   const [isedit , setisedit] = useState(false)
 
   const getUserDetails = async () => {
@@ -34,8 +36,14 @@ const AuthScreen = () => {
         const response = await axios.get('http://192.168.22.61:3000/auth/getuserdetails', {
           headers: { Authorization: `Bearer ${token}` }
         });
-        console.log(response.data.user.profilePic);
-        setUser(response.data.user);
+        dispatch(setUser({
+          name : response.data.user.name,
+          _id : response.data.user._id,
+          batch :response.data.user.batch,
+          role : response.data.user.role,
+          email : response.data.user.email
+        }))
+        setUserp(response.data.user);
       }
     } catch (error) {
       console.log(error);
