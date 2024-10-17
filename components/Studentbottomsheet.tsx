@@ -23,7 +23,7 @@ export const BottomView = ({ onClose, studentid }: { onClose: () => void; studen
 
   const getUserDetails = async () => {
     try {
-      const response = await axios.get(`http://192.168.22.61:3000/auth/getuserdetail?id=${studentid}`);
+      const response = await axios.get(`http://192.168.53.61:3000/auth/getuserdetail?id=${studentid}`);
       setUser(response.data.user);
       setLoading(false); // Hide loading when data is fetched
     } catch (error) {

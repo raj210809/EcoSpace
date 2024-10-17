@@ -24,7 +24,7 @@ const index = () => {
 
     const getUserDetails = async () => {
         try {
-            const response = await axios.get(`http://192.168.22.61:3000/auth/getuserdetail?id=${id}`);
+            const response = await axios.get(`http://192.168.53.61:3000/auth/getuserdetail?id=${id}`);
             setUser(response.data.user);
         } catch (error) {
           console.log(error);
